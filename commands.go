@@ -10,7 +10,7 @@ func StartCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
 	s.ChannelMessageSend(m.ChannelID, "Simple bot for Overwatch by @Lord Protector#9200\n\n"+
 		"**How to use:**\n"+
 		"1. Use /save to save your game profile.\n"+
-		"2. Use /me to see your stats.\n"+
+		"2. Use /profile to see your stats.\n"+
 		"3. ???\n"+
 		"4. PROFIT!\n\n"+
 		"**Features:**\n"+
