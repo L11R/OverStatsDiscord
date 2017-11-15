@@ -1,21 +1,21 @@
 package main
 
 import (
-	"os"
 	"fmt"
-	"strings"
-	"os/signal"
-	"syscall"
-	"github.com/sirupsen/logrus"
 	"github.com/bwmarrin/discordgo"
+	"github.com/sirupsen/logrus"
 	r "gopkg.in/gorethink/gorethink.v3"
+	"os"
+	"os/signal"
+	"strings"
+	"syscall"
 )
 
 var log = logrus.New()
 
 var (
 	session *r.Session
-	discordSession *discordgo.Session
+	dg      *discordgo.Session
 )
 
 func main() {
@@ -30,7 +30,7 @@ func main() {
 	}
 
 	// Create a new Discord session using the provided bot token.
-	dg, err := discordgo.New("Bot " + token)
+	dg, err = discordgo.New("Bot " + token)
 	if err != nil {
 		log.Fatal("error creating Discord session, ", err)
 	}
@@ -60,8 +60,6 @@ func main() {
 // This function will be called (due to AddHandler above) every time a new
 // message is created on any channel that the autenticated bot has access to.
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
-	discordSession = s
-
 	// Ignore all messages created by the bot itself
 	if m.Author.ID == s.State.User.ID {
 		return
@@ -72,35 +70,36 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	if strings.HasPrefix(m.Content, "/start") {
 		commandLogger.Info("command /start triggered")
-		go StartCommand(s, m)
+		go StartCommand(m)
 	}
 
 	if strings.HasPrefix(m.Content, "/donate") {
 		commandLogger.Info("command /donate triggered")
-		go DonateCommand(s, m)
+		go DonateCommand(m)
 	}
 
 	if strings.HasPrefix(m.Content, "/save") {
 		commandLogger.Info("command /save triggered")
-		go SaveCommand(s, m)
+		go SaveCommand(m)
 	}
 
 	if strings.HasPrefix(m.Content, "/profile") {
 		commandLogger.Info("command /profile triggered")
-		go ProfileCommand(s, m)
+		go ProfileCommand(m)
 	}
 
 	if strings.HasPrefix(m.Content, "/h_") {
 		commandLogger.Info("command /h_ triggered")
-		go HeroCommand(s, m)
+		go HeroCommand(m)
 	}
 
-	if strings.HasPrefix(m.Content, "/ratingtop") {
-		commandLogger.Info("command /ratingtop triggered")
-		if strings.HasSuffix(m.Content, "console") {
-			go RatingTopCommand(s, m, "console")
-		} else {
-			go RatingTopCommand(s, m, "pc")
-		}
+	if strings.HasPrefix(m.Content, "/consoletop") {
+		commandLogger.Info("command /consoletop triggered")
+		go RatingTopCommand(m, "console")
+	}
+
+	if strings.HasPrefix(m.Content, "/pctop") {
+		commandLogger.Info("command /pctop triggered")
+		go RatingTopCommand(m, "pc")
 	}
 }
