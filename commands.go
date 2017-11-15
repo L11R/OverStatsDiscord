@@ -83,7 +83,7 @@ func SaveCommand(m *discordgo.MessageCreate) {
 			text = "Saved!"
 		}
 	} else {
-		text = "**Example:** `/save eu|us|kr|psn|xbl BattleTag-1337|ConsoleLogin`"
+		text = "**Example:** `/save eu|us|kr|psn|xbl BattleTag#1337|ConsoleLogin`"
 	}
 
 	dg.ChannelMessageSend(m.ChannelID, text)
