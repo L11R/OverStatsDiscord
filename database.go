@@ -18,7 +18,7 @@ func InitConnectionPool() {
 		Address:    dbUrl,
 		InitialCap: 10,
 		MaxOpen:    10,
-		Database:   "OverStatsTelegram",
+		Database:   "OverStatsDiscord",
 	})
 	if err != nil {
 		log.Fatal(err)
