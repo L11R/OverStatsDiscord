@@ -111,6 +111,30 @@ func GetRatingPlace(id string) (Top, error) {
 	return top, nil
 }
 
+func GetRank(id string, index string, count r.Term) (Top, error) {
+	res, err := r.Do(
+		r.Table("users").OrderBy(r.OrderByOpts{Index: r.Desc(index)}).OffsetsOf(r.Row.Field("id").Eq(id)).Nth(0),
+		count,
+		func(place r.Term, count r.Term) r.Term {
+			return r.Expr(
+				map[string]interface{}{
+					"place": place.Add(1),
+					"rank":  place.Div(count).Mul(100),
+				},
+			)
+		},
+	).Run(session)
+
+	var top Top
+	err = res.One(&top)
+	if err != nil {
+		log.Warn(err)
+		return Top{}, err
+	}
+
+	return top, nil
+}
+
 func InsertUser(user User) (r.WriteResponse, error) {
 	newDoc := map[string]interface{}{
 		"id":      user.Id,
