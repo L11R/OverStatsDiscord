@@ -91,7 +91,7 @@ func MakeHeroSummary(hero string, user User) string {
 	if heroStats, ok := profile.CompetitiveStats.CareerStats[hero]; ok {
 		if heroAdditionalStats, ok := profile.CompetitiveStats.TopHeroes[hero]; ok {
 			text += fmt.Sprintf(" (%s)\n", heroAdditionalStats.TimePlayed)
-			text += fmt.Sprintf("<b>%d%%</b> hero winrate", heroAdditionalStats.WinPercentage)
+			text += fmt.Sprintf("**%d%%** hero winrate", heroAdditionalStats.WinPercentage)
 
 			res, err := GetRank(
 				user.Id,
