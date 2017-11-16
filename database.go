@@ -93,13 +93,6 @@ func GetRatingPlace(id string) (Top, error) {
 			)
 		},
 	).Run(session)
-	/*res, err := r.Do(
-		r.Table("users").Count(),
-		r.Table("users").OrderBy(r.Asc(r.Row.Field("profile").Field("CompetitiveStats").Field("CareerStats").Field(hero).Field(fieldType).Field(field))).OffsetsOf(r.Row.Field("id").Eq(id)).Nth(0),
-		func(count r.Term, position r.Term) r.Term {
-			return position.Div(count).Mul(100)
-		},
-	).Run(session)*/
 
 	var top Top
 	err = res.One(&top)
@@ -111,10 +104,10 @@ func GetRatingPlace(id string) (Top, error) {
 	return top, nil
 }
 
-func GetRank(id string, index string, count r.Term) (Top, error) {
+func GetRank(id string, index r.Term) (Top, error) {
 	res, err := r.Do(
-		r.Table("users").OrderBy(r.OrderByOpts{Index: r.Desc(index)}).OffsetsOf(r.Row.Field("id").Eq(id)).Nth(0),
-		count,
+		r.Table("users").OrderBy(r.Desc(index)).OffsetsOf(r.Row.Field("id").Eq(id)).Nth(0),
+		r.Table("users").Count(index.Ne(0)),
 		func(place r.Term, count r.Term) r.Term {
 			return r.Expr(
 				map[string]interface{}{

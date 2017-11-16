@@ -103,7 +103,15 @@ func ProfileCommand(m *discordgo.MessageCreate) {
 	}
 
 	log.Info("/profile command executed successful")
-	text := MakeSummary(user, place)
+
+	var text string
+	info := strings.Split(m.Content, "_")
+
+	if len(info) == 1 {
+		text = MakeSummary(user, place, "CompetitiveStats")
+	} else if len(info) == 2 && info[1] == "quick" {
+		text = MakeSummary(user, place, "QuickPlayStats")
+	}
 
 	dg.ChannelMessageSend(m.ChannelID, text)
 }
@@ -116,8 +124,16 @@ func HeroCommand(m *discordgo.MessageCreate) {
 	}
 
 	log.Info("/h_ command executed successful")
-	hero := strings.Split(m.Content, "_")[1]
-	text := MakeHeroSummary(hero, user)
+
+	var text string
+	info := strings.Split(m.Content, "_")
+	hero := info[1]
+
+	if len(info) == 2 {
+		text = MakeHeroSummary(hero, "CompetitiveStats", user)
+	} else if len(info) == 3 && info[2] == "quick" {
+		text = MakeHeroSummary(hero, "QuickPlayStats", user)
+	}
 
 	dg.ChannelMessageSend(m.ChannelID, text)
 }
