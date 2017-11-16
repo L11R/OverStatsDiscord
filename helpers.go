@@ -105,7 +105,7 @@ func MakeHeroSummary(hero string, user User) string {
 			}
 
 			if eliminationsPerLife, ok := heroStats.Combat["eliminationsPerLife"]; ok {
-				text += fmt.Sprintf("**%0.2f** k/d ratio\n", eliminationsPerLife)
+				text += fmt.Sprintf("**%0.2f** k/d ratio", eliminationsPerLife)
 
 				res, err := GetRank(
 					user.Id,
@@ -120,7 +120,7 @@ func MakeHeroSummary(hero string, user User) string {
 			}
 
 			if accuracy, ok := heroStats.Combat["weaponAccuracy"]; ok {
-				text += fmt.Sprintf("**%s** accuracy\n", accuracy)
+				text += fmt.Sprintf("**%s** accuracy", accuracy)
 
 				res, err := GetRank(
 					user.Id,
