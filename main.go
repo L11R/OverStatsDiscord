@@ -16,6 +16,7 @@ var log = logrus.New()
 var (
 	session *r.Session
 	dg      *discordgo.Session
+	dbPKPrefix = "dc:"
 )
 
 func main() {

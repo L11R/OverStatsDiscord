@@ -68,7 +68,7 @@ func SaveCommand(m *discordgo.MessageCreate) {
 			}
 
 			_, err = InsertUser(User{
-				Id:      m.Author.ID,
+				Id:      fmt.Sprint(dbPKPrefix, m.Author.ID),
 				DMId:    res.ID,
 				Profile: profile,
 				Region:  info[1],
@@ -90,13 +90,13 @@ func SaveCommand(m *discordgo.MessageCreate) {
 }
 
 func ProfileCommand(m *discordgo.MessageCreate) {
-	user, err := GetUser(m.Author.ID)
+	user, err := GetUser(fmt.Sprint(dbPKPrefix, m.Author.ID))
 	if err != nil {
 		log.Warn(err)
 		return
 	}
 
-	place, err := GetRatingPlace(m.Author.ID)
+	place, err := GetRatingPlace(fmt.Sprint(dbPKPrefix, m.Author.ID))
 	if err != nil {
 		log.Warn(err)
 		return
@@ -117,7 +117,7 @@ func ProfileCommand(m *discordgo.MessageCreate) {
 }
 
 func HeroCommand(m *discordgo.MessageCreate) {
-	user, err := GetUser(m.Author.ID)
+	user, err := GetUser(fmt.Sprint(dbPKPrefix, m.Author.ID))
 	if err != nil {
 		log.Warn(err)
 		return
