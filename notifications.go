@@ -37,10 +37,10 @@ func SessionReport(change Change) {
 			if gamesWon, ok := competitiveStats.Game["gamesWon"]; ok {
 				newStats.Wins = int(gamesWon.(float64))
 			}
-			if gamesTied, ok := competitiveStats.Miscellaneous["gamesTied"]; ok {
+			if gamesTied, ok := competitiveStats.Game["gamesTied"]; ok {
 				newStats.Ties = int(gamesTied.(float64))
 			}
-			if gamesLost, ok := competitiveStats.Miscellaneous["gamesLost"]; ok {
+			if gamesLost, ok := competitiveStats.Game["gamesLost"]; ok {
 				newStats.Losses = int(gamesLost.(float64))
 			}
 		}
@@ -67,7 +67,7 @@ func SessionReport(change Change) {
 			return text
 		}
 
-		if diffStats.Games != 0 {
+		if diffStats.Games > 0 || diffStats.Level != 0 {
 			log.Infof("sending report to %s", change.NewVal.DMId)
 			text := "**Session Report**\n\n"
 
